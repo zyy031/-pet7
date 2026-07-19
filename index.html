@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>每日一夸</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-theme="black">
+
+  <!--
+    ===== SVG 滤镜：毛绒边缘 =====
+    feTurbulence 生成噪点 → feDisplacementMap 扭曲元素边缘
+    产生不规则的、有机的毛绒轮廓
+  -->
+  <svg width="0" height="0" style="position:absolute">
+    <defs>
+      <!-- 主毛绒滤镜 -->
+      <filter id="fur-filter" x="-30%" y="-30%" width="160%" height="160%">
+        <feTurbulence
+          id="fur-turbulence"
+          type="fractalNoise"
+          baseFrequency="0.035 0.045"
+          numOctaves="5"
+          seed="2"
+          result="noise"
+        />
+        <feDisplacementMap
+          in="SourceGraphic"
+          in2="noise"
+          scale="42"
+          xChannelSelector="R"
+          yChannelSelector="G"
+          result="displaced"
+        />
+        <!-- 柔化边缘 -->
+        <feGaussianBlur in="displaced" stdDeviation="1.5" result="blurred"/>
+        <feComponentTransfer in="blurred" result="soft">
+          <feFuncA type="linear" slope="1.0"/>
+        </feComponentTransfer>
+      </filter>
+
+      <!-- 轻毛绒滤镜（内层） -->
+      <filter id="fur-light" x="-20%" y="-20%" width="140%" height="140%">
+        <feTurbulence
+          type="fractalNoise"
+          baseFrequency="0.05 0.06"
+          numOctaves="4"
+          seed="7"
+          result="noise"
+        />
+        <feDisplacementMap
+          in="SourceGraphic"
+          in2="noise"
+          scale="22"
+          xChannelSelector="R"
+          yChannelSelector="G"
+        />
+        <feGaussianBlur in="displaced" stdDeviation="0.8"/>
+      </filter>
+
+      <!-- 毛丝滤镜（细节） -->
+      <filter id="fur-strands" x="-40%" y="-40%" width="180%" height="180%">
+        <feTurbulence
+          type="fractalNoise"
+          baseFrequency="0.08 0.12"
+          numOctaves="3"
+          seed="12"
+          result="noise"
+        />
+        <feDisplacementMap
+          in="SourceGraphic"
+          in2="noise"
+          scale="18"
+          xChannelSelector="R"
+          yChannelSelector="G"
+        />
+      </filter>
+    </defs>
+  </svg>
+
+  <!-- ===== 毛绒背景：3层叠加 ===== -->
+  <!-- 第1层：深色基底大团绒毛 -->
+  <div class="fur-base" aria-hidden="true">
+    <span class="fur-blob fur-blob--1"></span>
+    <span class="fur-blob fur-blob--2"></span>
+    <span class="fur-blob fur-blob--3"></span>
+    <span class="fur-blob fur-blob--4"></span>
+  </div>
+
+  <!-- 第2层：浅色高光绒毛 -->
+  <div class="fur-highlight" aria-hidden="true">
+    <span class="fur-hi fur-hi--1"></span>
+    <span class="fur-hi fur-hi--2"></span>
+    <span class="fur-hi fur-hi--3"></span>
+    <span class="fur-hi fur-hi--4"></span>
+    <span class="fur-hi fur-hi--5"></span>
+    <span class="fur-hi fur-hi--6"></span>
+  </div>
+
+  <!-- 第3层：毛丝纹理（细长条 + SVG 滤镜 = 毛流感） -->
+  <div class="fur-strand-layer" aria-hidden="true">
+    <span class="fur-strand fur-strand--1"></span>
+    <span class="fur-strand fur-strand--2"></span>
+    <span class="fur-strand fur-strand--3"></span>
+    <span class="fur-strand fur-strand--4"></span>
+    <span class="fur-strand fur-strand--5"></span>
+    <span class="fur-strand fur-strand--6"></span>
+    <span class="fur-strand fur-strand--7"></span>
+    <span class="fur-strand fur-strand--8"></span>
+  </div>
+
+  <!-- ===== 微风粒子层 ===== -->
+  <div class="wind-layer" aria-hidden="true">
+    <span class="wisp wisp--1"></span>
+    <span class="wisp wisp--2"></span>
+    <span class="wisp wisp--3"></span>
+    <span class="wisp wisp--4"></span>
+    <span class="wisp wisp--5"></span>
+    <span class="wisp wisp--6"></span>
+    <span class="wisp wisp--7"></span>
+    <span class="wisp wisp--8"></span>
+  </div>
+
+  <!-- ===== 卡片（保持 brutalist） ===== -->
+  <main class="card">
+
+    <span class="card__index">01</span>
+
+    <header class="card__header">
+      <h1 class="card__title">每日一夸</h1>
+      <div class="card__rule"></div>
+      <p class="card__sub">INTERACTION · 点按团子获取夸赞</p>
+    </header>
+
+    <div class="pet-area">
+
+      <div class="bubble" id="bubble">
+        <p class="bubble__text" id="bubbleText"></p>
+        <span class="bubble__tail"></span>
+      </div>
+
+      <div class="creature" id="pet" title="PRESS">
+
+        <div class="creature__ear creature__ear--left" id="earL">
+          <span class="creature__ear-hole"></span>
+        </div>
+        <div class="creature__ear creature__ear--right" id="earR">
+          <span class="creature__ear-hole"></span>
+        </div>
+
+        <div class="creature__body">
+          <span class="creature__fluff" id="fluff"></span>
+
+          <div class="creature__face" id="face">
+            <div class="creature__eye creature__eye--left">
+              <span class="creature__eye-shine"></span>
+            </div>
+            <div class="creature__eye creature__eye--right">
+              <span class="creature__eye-shine"></span>
+            </div>
+            <span class="creature__mouth"></span>
+          </div>
+
+          <span class="creature__blush creature__blush--left"></span>
+          <span class="creature__blush creature__blush--right"></span>
+          <span class="creature__ahoge" id="ahoge"></span>
+        </div>
+      </div>
+
+    </div>
+
+    <p class="hint">[ 点击团子 · 随机夸夸 · 切换色系 ]</p>
+
+    <div class="theme-dots">
+      <span class="theme-dots__label">ACCENT</span>
+      <span class="theme-dot is-active" data-idx="0"></span>
+      <span class="theme-dot" data-idx="1"></span>
+      <span class="theme-dot" data-idx="2"></span>
+      <span class="theme-dot" data-idx="3"></span>
+      <span class="theme-dot" data-idx="4"></span>
+    </div>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,545 @@
+/* ============================================================
+   style.css — Brutalism 卡片 + SVG 滤镜长毛绒背景 + 风吹
+   毛色取自参考图：~#c6b197 暖驼绒
+   ============================================================ */
+
+/* ============================================================
+   1. 重置
+   ============================================================ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:62.5%;-webkit-text-size-adjust:100%}
+
+/* ============================================================
+   2. 令牌 & 主题
+   ============================================================ */
+:root{
+  /* 团子 */
+  --cr-body:#f4f1ec;--cr-body-hi:#fcfbf9;--cr-body-lo:#e5dfd5;
+  --cr-tuft-light:#fcfbf8;--cr-tuft-dark:#ded8cc;
+  --cr-ear:#eae4d9;--cr-ear-in:#d5c9b8;
+  --cr-blush:rgba(190,140,110,0.35);
+  --cr-eye:#1a1a1a;--cr-mouth:#1a1a1a;
+  --bubble-bg:#ffffff;--card-bg:#fafaf8;--border-width:2px;
+
+  /* 毛绒色系（取自参考图） */
+  --fur-a:#c6b197;  /* 基底驼色 */
+  --fur-b:#d4c0a8;  /* 浅驼 */
+  --fur-c:#b89f84;  /* 深驼 */
+  --fur-d:#ded0bc;  /* 高光浅色 */
+}
+body[data-theme="black"]{--accent:#1a1a1a}
+body[data-theme="red"]{--accent:#c0392b}
+body[data-theme="blue"]{--accent:#2c5f8a}
+body[data-theme="green"]{--accent:#4a6b3a}
+body[data-theme="raw"]{--accent:#8a6a4a}
+
+/* ============================================================
+   3. Body
+   ============================================================ */
+body{
+  min-height:100vh;display:flex;justify-content:center;align-items:center;
+  background:#d5c9b8; /* 毛绒底色 */
+  font-family:"Courier New","Menlo","Consolas","SimHei","PingFang SC",monospace;
+  -webkit-font-smoothing:antialiased;
+  padding:2.4rem;overflow:hidden;
+  position:relative;
+}
+
+/* ============================================================
+   4. 毛绒基底（大团 + SVG 滤镜 = 有机毛绒轮廓）
+   ============================================================ */
+.fur-base{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+}
+
+.fur-blob{
+  position:absolute;border-radius:42% 58% 55% 45% / 48% 45% 58% 52%;
+  filter:url(#fur-filter);
+  animation:furSway var(--dur,8s) ease-in-out infinite;
+  animation-delay:var(--delay,0s);
+}
+
+.fur-blob--1{
+  width:420px;height:340px;
+  background:radial-gradient(ellipse at 40% 35%, var(--fur-b) 0%, var(--fur-a) 55%, var(--fur-c) 100%);
+  top:-140px;left:-100px;--dur:8s;--delay:0s;
+}
+.fur-blob--2{
+  width:400px;height:320px;
+  background:radial-gradient(ellipse at 55% 40%, var(--fur-d) 0%, var(--fur-a) 50%, var(--fur-c) 95%);
+  top:-110px;right:-80px;--dur:9s;--delay:1.5s;
+}
+.fur-blob--3{
+  width:380px;height:350px;
+  background:radial-gradient(ellipse at 35% 30%, var(--fur-a) 0%, var(--fur-c) 55%, var(--fur-b) 100%);
+  bottom:-130px;left:-70px;--dur:9.5s;--delay:3s;
+}
+.fur-blob--4{
+  width:400px;height:360px;
+  background:radial-gradient(ellipse at 50% 35%, var(--fur-b) 0%, var(--fur-a) 48%, var(--fur-c) 95%);
+  bottom:-140px;right:-90px;--dur:8.5s;--delay:4s;
+}
+
+/* 毛绒在微风中的摇摆 */
+@keyframes furSway{
+  0%,100%{transform:translate(0,0) scale(1)}
+  20%{transform:translate(12px,-8px) scale(1.03)}
+  40%{transform:translate(-8px,5px) scale(0.97)}
+  60%{transform:translate(-14px,-4px) scale(1.04)}
+  80%{transform:translate(6px,10px) scale(0.98)}
+}
+
+/* ============================================================
+   5. 高光绒毛层（浅色 + 轻滤镜 = 表面毛流感）
+   ============================================================ */
+.fur-highlight{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+}
+
+.fur-hi{
+  position:absolute;border-radius:44% 56% 52% 48% / 46% 50% 54% 48%;
+  filter:url(#fur-light);
+  animation:furSway var(--dur,7s) ease-in-out infinite;
+  animation-delay:var(--delay,0s);
+}
+
+.fur-hi--1{
+  width:280px;height:220px;
+  background:radial-gradient(ellipse at 40% 35%, var(--fur-d) 0%, var(--fur-b) 60%, transparent 90%);
+  top:-60px;left:10%;--dur:7s;--delay:0.5s;
+}
+.fur-hi--2{
+  width:260px;height:200px;
+  background:radial-gradient(ellipse at 50% 40%, var(--fur-d) 0%, var(--fur-b) 55%, transparent 88%);
+  top:-40px;right:8%;--dur:7.5s;--delay:2s;
+}
+.fur-hi--3{
+  width:240px;height:210px;
+  background:radial-gradient(ellipse at 35% 30%, var(--fur-d) 0%, var(--fur-b) 58%, transparent 90%);
+  bottom:-50px;left:5%;--dur:8s;--delay:3.5s;
+}
+.fur-hi--4{
+  width:250px;height:200px;
+  background:radial-gradient(ellipse at 45% 35%, var(--fur-d) 0%, var(--fur-b) 55%, transparent 88%);
+  bottom:-60px;right:10%;--dur:7.8s;--delay:4.5s;
+}
+.fur-hi--5{
+  width:200px;height:280px;
+  background:radial-gradient(ellipse at 40% 50%, var(--fur-d) 0%, var(--fur-b) 60%, transparent 90%);
+  top:20%;left:-50px;--dur:8.5s;--delay:1s;
+}
+.fur-hi--6{
+  width:220px;height:260px;
+  background:radial-gradient(ellipse at 50% 45%, var(--fur-d) 0%, var(--fur-b) 55%, transparent 88%);
+  top:18%;right:-40px;--dur:7.2s;--delay:2.8s;
+}
+
+/* ============================================================
+   6. 毛丝层（细长条 + SVG 滤镜 = 方向性毛流）
+   ============================================================ */
+.fur-strand-layer{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+}
+
+.fur-strand{
+  position:absolute;
+  width:var(--sw,5px);
+  height:var(--sh,100px);
+  background:linear-gradient(to top,
+    transparent 0%, var(--fur-d) 15%, var(--fur-b) 50%, var(--fur-a) 85%, transparent 100%);
+  border-radius:40% 40% 45% 45%;
+  filter:url(#fur-strands);
+  transform:rotate(var(--sr,0deg));
+  animation:strandWind var(--sp,6s) ease-in-out infinite;
+  animation-delay:var(--sd,0s);
+  opacity:var(--so,0.7);
+  left:var(--sx,20%);top:var(--sy,10%);
+}
+
+.fur-strand--1{--sx:15%;--sy:5%;--sr:-8deg;--sw:6px;--sh:130px;--sp:5.5s;--sd:0s;--so:0.65}
+.fur-strand--2{--sx:25%;--sy:0%;--sr:5deg;--sw:4px;--sh:110px;--sp:6s;--sd:-1.5s;--so:0.55}
+.fur-strand--3{--sx:60%;--sy:2%;--sr:-3deg;--sw:7px;--sh:120px;--sp:5s;--sd:-3s;--so:0.6}
+.fur-strand--4{--sx:78%;--sy:8%;--sr:10deg;--sw:5px;--sh:100px;--sp:6.5s;--sd:-2s;--so:0.5}
+.fur-strand--5{--sx:5%;--sy:88%;--sr:-12deg;--sw:6px;--sh:125px;--sp:5.8s;--sd:-4s;--so:0.6}
+.fur-strand--6{--sx:35%;--sy:95%;--sr:6deg;--sw:5px;--sh:110px;--sp:6.2s;--sd:-1s;--so:0.55}
+.fur-strand--7{--sx:65%;--sy:90%;--sr:-5deg;--sw:7px;--sh:115px;--sp:5.3s;--sd:-2.5s;--so:0.6}
+.fur-strand--8{--sx:88%;--sy:82%;--sr:8deg;--sw:4px;--sh:105px;--sp:6.8s;--sd:-3.5s;--so:0.5}
+
+/* 毛丝在风中的摆动（左右摇 + 微旋） */
+@keyframes strandWind{
+  0%,100%{transform:rotate(var(--sr,0deg)) translateX(0)}
+  25%{transform:rotate(calc(var(--sr,0deg) + 6deg)) translateX(10px)}
+  50%{transform:rotate(calc(var(--sr,0deg) - 4deg)) translateX(-6px)}
+  75%{transform:rotate(calc(var(--sr,0deg) + 8deg)) translateX(14px)}
+}
+
+/* ============================================================
+   7. 微风粒子（绒毛屑飘飞）
+   ============================================================ */
+.wind-layer{
+  position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;
+}
+
+.wisp{
+  position:absolute;border-radius:50%;
+  background:radial-gradient(circle, rgba(230,218,200,0.7) 0%, rgba(210,195,175,0.25) 55%, transparent 80%);
+  animation:wispDrift var(--speed,11s) linear infinite;
+  animation-delay:var(--start,0s);
+  top:var(--top,50%);width:var(--size,8px);height:var(--size,8px);
+}
+.wisp--1{--size:9px;--top:12%;--speed:9s;--start:0s}
+.wisp--2{--size:5px;--top:25%;--speed:11s;--start:-2s}
+.wisp--3{--size:12px;--top:38%;--speed:13s;--start:-4s}
+.wisp--4{--size:7px;--top:52%;--speed:10s;--start:-3s}
+.wisp--5{--size:10px;--top:65%;--speed:12s;--start:-6s}
+.wisp--6{--size:4px;--top:75%;--speed:8s;--start:-1s}
+.wisp--7{--size:8px;--top:20%;--speed:14s;--start:-5s}
+.wisp--8{--size:6px;--top:45%;--speed:9.5s;--start:-7s}
+
+@keyframes wispDrift{
+  0%{transform:translate(-40px,0) rotate(0deg);opacity:0}
+  8%{opacity:0.7}
+  50%{transform:translate(50vw,-15px) rotate(200deg);opacity:0.4}
+  92%{opacity:0.5}
+  100%{transform:translate(110vw,10px) rotate(380deg);opacity:0}
+}
+
+/* ============================================================
+   8. 卡片（毛绒海洋中的 brutalist 方碑）
+   ============================================================ */
+.card{
+  position:relative;z-index:1;
+  background:var(--card-bg);
+  border:var(--border-width) solid var(--accent);
+  border-radius:2px;
+  display:flex;flex-direction:column;align-items:center;
+  max-width:440px;width:100%;
+  padding:3.6rem 3.2rem 3.2rem;
+  box-shadow:6px 6px 0 rgba(0,0,0,0.08);
+  transition:border-color 0.3s ease,box-shadow 0.3s ease;
+  animation:cardFloat 6s ease-in-out infinite;
+}
+@keyframes cardFloat{
+  0%,100%{transform:rotate(0deg)}
+  25%{transform:rotate(0.3deg)}
+  75%{transform:rotate(-0.3deg)}
+}
+
+.card__index{
+  position:absolute;top:-14px;left:16px;
+  font-family:"Courier New",monospace;
+  font-size:1.2rem;font-weight:700;color:var(--accent);
+  background:var(--card-bg);padding:0 8px;letter-spacing:0.1em;
+}
+
+.card__header{width:100%;text-align:left;margin-bottom:3rem}
+
+.card__title{
+  font-family:"SimHei","PingFang SC","Microsoft YaHei","Helvetica Neue",sans-serif;
+  font-size:3.8rem;font-weight:900;letter-spacing:0.04em;line-height:1.05;
+  color:#111;text-transform:uppercase;
+}
+
+.card__rule{width:100%;height:2px;background:var(--accent);margin:1rem 0 0.8rem;opacity:0.5}
+
+.card__sub{
+  font-family:"Courier New",monospace;
+  font-size:1.1rem;font-weight:400;color:#666;letter-spacing:0.12em;text-transform:uppercase;
+}
+
+/* ============================================================
+   9. 团子区
+   ============================================================ */
+.pet-area{position:relative;display:flex;flex-direction:column;align-items:center}
+
+/* ============================================================
+   10. 气泡
+   ============================================================ */
+.bubble{
+  position:absolute;bottom:calc(100% + 16px);left:50%;transform:translateX(-50%);
+  opacity:0;visibility:hidden;translate:0 6px;
+  background:var(--bubble-bg);border:2px solid var(--accent);border-radius:1px;
+  padding:1.2rem 2rem;min-width:120px;max-width:280px;
+  z-index:10;white-space:normal;
+  box-shadow:3px 3px 0 rgba(0,0,0,0.06);
+  transition:opacity 0.15s,visibility 0.15s,translate 0.2s;
+}
+.bubble--visible{opacity:1;visibility:visible;translate:0 0}
+
+.bubble__tail{
+  position:absolute;bottom:-10px;left:50%;translate:-50% 0;
+  width:0;height:0;
+  border-left:10px solid transparent;border-right:10px solid transparent;
+  border-top:12px solid var(--accent);
+}
+.bubble__tail::after{
+  content:"";position:absolute;top:-14px;left:-8px;
+  width:0;height:0;
+  border-left:8px solid transparent;border-right:8px solid transparent;
+  border-top:10px solid #fff;
+}
+
+.bubble__text{
+  font-family:"SimHei","PingFang SC","Microsoft YaHei",sans-serif;
+  font-size:1.55rem;line-height:1.7;color:#1a1a1a;font-weight:600;
+  letter-spacing:0.04em;text-align:center;word-break:break-word;
+}
+
+/* ============================================================
+   11. 团子
+   ============================================================ */
+.creature{
+  position:relative;width:18rem;height:18rem;
+  cursor:crosshair;user-select:none;
+  -webkit-tap-highlight-color:transparent;
+  transition:transform 0.2s;z-index:2;
+  animation:creatureWind 5s ease-in-out infinite;
+}
+@keyframes creatureWind{
+  0%,100%{transform:translateX(0)}
+  30%{transform:translateX(3px)}
+  60%{transform:translateX(-4px)}
+}
+.creature:hover{transform:scale(1.04)}
+.creature:active{transform:scale(0.95)}
+
+.creature__body{
+  position:absolute;inset:0.8rem;
+  background:radial-gradient(circle at 36% 30%,
+    var(--cr-body-hi) 0%,var(--cr-body) 40%,#ebe5da 68%,var(--cr-body-lo) 100%);
+  border-radius:48% 52% 50% 50% / 47% 48% 53% 52%;
+  display:flex;justify-content:center;align-items:center;
+  box-shadow:
+    0    -80px 0 -60px var(--cr-tuft-light),
+    16px -76px 0 -60px var(--cr-tuft-light),
+    -16px -76px 0 -60px var(--cr-tuft-light),
+    34px -66px 0 -61px var(--cr-tuft-light),
+    -34px -66px 0 -61px var(--cr-tuft-light),
+    48px -52px 0 -62px var(--cr-tuft-light),
+    -48px -52px 0 -62px var(--cr-tuft-light),
+    60px -32px 0 -63px var(--cr-tuft-light),
+    -60px -32px 0 -63px var(--cr-tuft-light),
+    66px  -8px 0 -64px var(--cr-tuft-light),
+    -66px  -8px 0 -64px var(--cr-tuft-light),
+    66px  18px 0 -64px var(--cr-tuft-light),
+    -66px  18px 0 -64px var(--cr-tuft-light),
+    58px  44px 0 -63px var(--cr-tuft-light),
+    -58px  44px 0 -63px var(--cr-tuft-light),
+    42px  64px 0 -62px var(--cr-tuft-light),
+    -42px  64px 0 -62px var(--cr-tuft-light),
+    0     76px 0 -60px var(--cr-tuft-light),
+    9px  -79px 0 -61px var(--cr-tuft-dark),
+    -9px  -79px 0 -61px var(--cr-tuft-dark),
+    26px -72px 0 -62px var(--cr-tuft-dark),
+    -26px -72px 0 -62px var(--cr-tuft-dark),
+    42px -58px 0 -63px var(--cr-tuft-dark),
+    -42px -58px 0 -63px var(--cr-tuft-dark),
+    54px -42px 0 -64px var(--cr-tuft-dark),
+    -54px -42px 0 -64px var(--cr-tuft-dark),
+    64px -20px 0 -64px var(--cr-tuft-dark),
+    -64px -20px 0 -64px var(--cr-tuft-dark),
+    68px   6px 0 -64px var(--cr-tuft-dark),
+    -68px   6px 0 -64px var(--cr-tuft-dark),
+    62px  32px 0 -64px var(--cr-tuft-dark),
+    -62px  32px 0 -64px var(--cr-tuft-dark),
+    50px  54px 0 -63px var(--cr-tuft-dark),
+    -50px  54px 0 -63px var(--cr-tuft-dark),
+    28px  72px 0 -62px var(--cr-tuft-dark),
+    -28px  72px 0 -62px var(--cr-tuft-dark),
+    inset 0 -4px 8px rgba(0,0,0,0.06),
+    inset 0 2px 4px rgba(255,255,255,0.50);
+}
+
+.creature__body::before{
+  content:"";position:absolute;inset:-16px;border-radius:50%;
+  background:radial-gradient(circle at 40% 35%,
+    rgba(255,255,255,0.4) 0%,rgba(240,235,225,0.15) 55%,transparent 78%);
+  z-index:-2;pointer-events:none;
+}
+
+.creature__fluff{
+  position:absolute;inset:-20px;border-radius:50%;
+  z-index:-1;pointer-events:none;
+  --dx:calc(var(--mx,0) * 8px);--dy:calc(var(--my,0) * 8px);
+  transform:translate(var(--dx),var(--dy));
+  transition:transform 0.3s ease-out;
+  animation:fluffWind 4s ease-in-out infinite;
+  background:
+    radial-gradient(circle 20px at 50%  0%,  var(--cr-tuft-light) 90%, transparent),
+    radial-gradient(circle 16px at 28%  2%,  var(--cr-tuft-dark)  90%, transparent),
+    radial-gradient(circle 16px at 72%  2%,  var(--cr-tuft-dark)  90%, transparent),
+    radial-gradient(circle 15px at 14%  6%,  var(--cr-tuft-light) 90%, transparent),
+    radial-gradient(circle 15px at 86%  6%,  var(--cr-tuft-light) 90%, transparent),
+    radial-gradient(circle 13px at 6%  20%,  var(--cr-tuft-dark)  90%, transparent),
+    radial-gradient(circle 13px at 94% 20%,  var(--cr-tuft-dark)  90%, transparent),
+    radial-gradient(circle 19px at 96% 40%,  var(--cr-tuft-light) 90%, transparent),
+    radial-gradient(circle 19px at 4%  40%,  var(--cr-tuft-light) 90%, transparent),
+    radial-gradient(circle 16px at 97% 60%,  var(--cr-tuft-dark)  90%, transparent),
+    radial-gradient(circle 16px at 3%  60%,  var(--cr-tuft-dark)  90%, transparent),
+    radial-gradient(circle 18px at 50% 97%,  var(--cr-tuft-light) 90%, transparent),
+    radial-gradient(circle 14px at 28% 95%,  var(--cr-tuft-dark)  90%, transparent),
+    radial-gradient(circle 14px at 72% 95%,  var(--cr-tuft-dark)  90%, transparent),
+    radial-gradient(circle 13px at 80% 28%,  var(--cr-tuft-light) 90%, transparent),
+    radial-gradient(circle 13px at 20% 28%,  var(--cr-tuft-light) 90%, transparent),
+    radial-gradient(circle 12px at 82% 74%,  var(--cr-tuft-dark)  90%, transparent),
+    radial-gradient(circle 12px at 18% 74%,  var(--cr-tuft-dark)  90%, transparent);
+}
+@keyframes fluffWind{
+  0%,100%{translate:0 0}
+  30%{translate:3px -2px}
+  60%{translate:-4px 2px}
+}
+
+.creature__ear{
+  position:absolute;width:3.4rem;height:4.4rem;
+  background:radial-gradient(ellipse at 50% 40%,#f7f3ec 0%,var(--cr-ear) 60%,#d9cdb8 100%);
+  border-radius:50% 50% 40% 40%;top:-0.2rem;z-index:-1;
+  --edx:calc(var(--mx,0) * 4px);--edy:calc(var(--my,0) * 4px);
+  transition:transform 0.3s ease-out;
+  animation:earWind 3.5s ease-in-out infinite;
+}
+@keyframes earWind{0%,100%{rotate:0deg}30%{rotate:2deg}60%{rotate:-3deg}}
+.creature__ear--left{left:2.2rem;transform:rotate(-10deg) translate(var(--edx),var(--edy))}
+.creature__ear--right{right:2.2rem;transform:rotate(10deg) translate(var(--edx),var(--edy))}
+
+.creature__ear-hole{
+  position:absolute;width:54%;height:46%;background:var(--cr-ear-in);
+  border-radius:50%;top:50%;left:50%;
+  transform:translate(-50%,-50%) rotate(5deg);opacity:0.45;
+}
+
+.creature__ahoge{
+  position:absolute;top:-6px;left:calc(50% - 2.5px);
+  width:5px;height:18px;background:var(--cr-tuft-light);
+  border-radius:40% 40% 25% 25%;z-index:3;transform-origin:bottom center;
+  --ax:calc(var(--mx,0) * 14px);--ay:calc(var(--my,0) * 10px);
+  --ar:calc(var(--mx,0) * 22deg);
+  transform:translate(var(--ax),var(--ay)) rotate(var(--ar));
+  transition:transform 0.22s ease-out;
+  animation:ahogeWind 2.8s ease-in-out infinite;
+}
+@keyframes ahogeWind{0%,100%{rotate:0deg}25%{rotate:5deg}50%{rotate:-6deg}75%{rotate:3deg}}
+
+.creature__face{
+  position:relative;z-index:2;
+  display:flex;flex-wrap:wrap;justify-content:center;align-items:center;
+  gap:20px;width:72px;transition:gap 0.2s;
+}
+
+.creature__eye{
+  position:relative;width:18px;height:18px;background:var(--cr-eye);
+  border-radius:50%;transition:height 0.2s,border-radius 0.2s,transform 0.2s;
+}
+.creature__eye-shine{
+  position:absolute;width:6px;height:6px;background:#fff;
+  border-radius:50%;top:2px;right:2px;opacity:0.9;
+}
+
+.creature__mouth{
+  display:block;width:20px;height:9px;
+  border-bottom:2.4px solid var(--cr-mouth);border-radius:0 0 50% 50%;
+  position:absolute;bottom:-18px;left:50%;translate:-50% 0;
+  transition:width 0.2s,height 0.2s,border-width 0.2s;
+}
+
+.creature__blush{
+  position:absolute;width:2.4rem;height:1.4rem;
+  background:radial-gradient(ellipse at center,
+    var(--cr-blush) 0%,rgba(190,140,110,0.04) 55%,transparent 80%);
+  border-radius:50%;top:58%;z-index:1;pointer-events:none;
+}
+.creature__blush--left{left:14%}.creature__blush--right{right:14%}
+
+/* ============================================================
+   12. 开心
+   ============================================================ */
+.creature__face--happy .creature__eye{
+  height:6px;border-radius:6px 6px 0 0;transform:translateY(4px);
+}
+.creature__face--happy .creature__mouth{width:26px;height:13px;border-bottom-width:2.8px}
+.creature__face--happy{gap:17px}
+
+/* ============================================================
+   13. 弹跳
+   ============================================================ */
+.creature--bouncing{animation:bounce 0.4s ease !important}
+@keyframes bounce{
+  0%{transform:translateY(0)scale(1)}
+  20%{transform:translateY(4px)scale(0.90)}
+  45%{transform:translateY(-16px)scale(1.08)}
+  65%{transform:translateY(2px)scale(0.94)}
+  85%{transform:translateY(0)scale(0.98)}
+  100%{transform:translateY(0)scale(1)}
+}
+
+/* ============================================================
+   14. 底部
+   ============================================================ */
+.hint{margin-top:3rem;font-family:"Courier New",monospace;font-size:1.15rem;color:#555;letter-spacing:0.06em}
+.theme-dots{display:flex;align-items:center;gap:8px;margin-top:1.2rem}
+.theme-dots__label{font-family:"Courier New",monospace;font-size:0.95rem;color:#999;letter-spacing:0.1em;margin-right:4px}
+.theme-dot{width:10px;height:10px;border:1.5px solid #aaa;border-radius:1px;background:#fff;transition:background 0.2s,border-color 0.2s}
+.theme-dot.is-active{background:var(--accent);border-color:var(--accent)}
+
+/* ============================================================
+   15. 响应式
+   ============================================================ */
+@media(max-width:768px){
+  html{font-size:56.25%}
+  .card{padding:2.8rem 2.4rem 2.6rem}
+  .card__title{font-size:3rem}
+}
+
+@media(max-width:480px){
+  html{font-size:50%}
+  body{padding:1.2rem}
+  .card{padding:2.4rem 1.4rem 2rem;box-shadow:4px 4px 0 rgba(0,0,0,0.06)}
+  .card__title{font-size:2.6rem}
+  .card__sub{font-size:1rem}
+  .card__rule{margin:0.8rem 0 0.6rem}
+
+  .creature{width:14.5rem;height:14.5rem}
+  .creature__body{inset:0.6rem}
+  .creature__body{box-shadow:
+    0    -60px 0 -44px var(--cr-tuft-light),
+    12px -56px 0 -44px var(--cr-tuft-light),-12px -56px 0 -44px var(--cr-tuft-light),
+    26px -46px 0 -45px var(--cr-tuft-light),-26px -46px 0 -45px var(--cr-tuft-light),
+    38px -32px 0 -46px var(--cr-tuft-light),-38px -32px 0 -46px var(--cr-tuft-light),
+    46px -14px 0 -47px var(--cr-tuft-light),-46px -14px 0 -47px var(--cr-tuft-light),
+    50px   8px 0 -47px var(--cr-tuft-light),-50px   8px 0 -47px var(--cr-tuft-light),
+    40px  30px 0 -46px var(--cr-tuft-light),-40px  30px 0 -46px var(--cr-tuft-light),
+    0     56px 0 -44px var(--cr-tuft-light),
+    7px  -58px 0 -45px var(--cr-tuft-dark),-7px  -58px 0 -45px var(--cr-tuft-dark),
+    20px -50px 0 -46px var(--cr-tuft-dark),-20px -50px 0 -46px var(--cr-tuft-dark),
+    34px -38px 0 -47px var(--cr-tuft-dark),-34px -38px 0 -47px var(--cr-tuft-dark),
+    44px -20px 0 -48px var(--cr-tuft-dark),-44px -20px 0 -48px var(--cr-tuft-dark),
+    48px   0    0 -48px var(--cr-tuft-dark),-48px   0    0 -48px var(--cr-tuft-dark),
+    34px  22px 0 -47px var(--cr-tuft-dark),-34px  22px 0 -47px var(--cr-tuft-dark),
+    18px  50px 0 -45px var(--cr-tuft-dark),-18px  50px 0 -45px var(--cr-tuft-dark),
+    inset 0 -3px 6px rgba(0,0,0,0.05),inset 0 1px 3px rgba(255,255,255,0.45)}
+
+  .creature__fluff{inset:-14px;background:
+    radial-gradient(circle 14px at 50% 0%, var(--cr-tuft-light) 90%, transparent),
+    radial-gradient(circle 11px at 28% 3%, var(--cr-tuft-dark) 90%, transparent),
+    radial-gradient(circle 11px at 72% 3%, var(--cr-tuft-dark) 90%, transparent),
+    radial-gradient(circle 13px at 94% 40%, var(--cr-tuft-light) 90%, transparent),
+    radial-gradient(circle 13px at 6%  40%, var(--cr-tuft-light) 90%, transparent),
+    radial-gradient(circle 12px at 50% 95%, var(--cr-tuft-light) 90%, transparent),
+    radial-gradient(circle 10px at 80% 30%, var(--cr-tuft-light) 90%, transparent),
+    radial-gradient(circle 10px at 20% 30%, var(--cr-tuft-light) 90%, transparent)}
+
+  .creature__ear{width:2.6rem;height:3.4rem}
+  .creature__ear--left{left:1.6rem}.creature__ear--right{right:1.6rem}
+  .creature__ahoge{top:-4px;width:4px;height:13px}
+  .creature__eye{width:16px;height:16px}
+  .creature__mouth{width:18px;height:7px}
+  .creature__blush{width:2rem;height:1.1rem}
+  .bubble{max-width:200px;padding:1rem 1.4rem;bottom:calc(100% + 10px)}
+  .bubble__text{font-size:1.3rem}
+  .hint{font-size:1rem;margin-top:2rem}
+
+  /* 手机精简毛绒 */
+  .fur-blob--3,.fur-blob--4,.fur-hi--3,.fur-hi--4,.fur-hi--5,.fur-hi--6{display:none}
+  .fur-strand--5,.fur-strand--6,.fur-strand--7,.fur-strand--8{display:none}
+  .wisp--5,.wisp--6,.wisp--7,.wisp--8{display:none}
+}
